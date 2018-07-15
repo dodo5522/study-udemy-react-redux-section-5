@@ -28,18 +28,34 @@ class List extends React.Component {
   }
 }
 
-class BottunToAddListItem extends React.Component {
+interface TodoTitle {
+  title: String;
+}
+
+class TodoAppender extends React.Component {
+  private state: TodoTitle;
+
   constructor(props) {
     super(props);
+    this.state = { title: "" };
   }
 
-  private onButtonClick() {}
+  private listenerOnChange = event => {
+    // alert(event.target.value);
+    this.setState({ title: event.target.value });
+  };
 
   private render() {
     return (
-      <div>
-        <button onClick={this.onButtonClick}>Todo追加</button>
-      </div>
+      <form>
+        <input id="btnSubmit" type="submit" value="Todo追加" />
+        <input
+          id="txtTodo"
+          type="text"
+          value={this.state.title}
+          onChange={this.listenerOnChange}
+        />
+      </form>
     );
   }
 }
@@ -58,7 +74,7 @@ class App extends React.Component {
   private render() {
     return (
       <div>
-        <BottunToAddListItem />
+        <TodoAppender />
         <hr />
         <List todos={this.state.todos} />
       </div>

@@ -45,6 +45,7 @@ class TodoAppender extends React.Component {
   };
 
   private listenerOnSubmit = event => {
+    this.props.appender(this.state.title);
     this.setState({ title: "" });
     event.preventDefault();
   };
@@ -70,20 +71,27 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      todos: [{ id: 0, title: "hoge" }, { id: 1, title: "hoge1" }],
-      nextId: 2
+      todos: [],
+      nextId: 0
     };
   }
 
   private render() {
     return (
       <div>
-        <TodoAppender />
+        <TodoAppender appender={this.AddTodo} />
         <hr />
         <List todos={this.state.todos} />
       </div>
     );
   }
+
+  private AddTodo = (title: String): void => {
+    this.setState({
+      todos: [...this.state.todos, { id: this.state.nextId, title: title }],
+      nextId: this.state.nextId + 1
+    });
+  };
 }
 
 render(<App />, document.getElementById("root"));

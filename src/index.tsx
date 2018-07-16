@@ -41,13 +41,17 @@ class TodoAppender extends React.Component {
   }
 
   private listenerOnChange = event => {
-    // alert(event.target.value);
     this.setState({ title: event.target.value });
+  };
+
+  private listenerOnSubmit = event => {
+    this.setState({ title: "" });
+    event.preventDefault();
   };
 
   private render() {
     return (
-      <form>
+      <form onSubmit={this.listenerOnSubmit}>
         <input id="btnSubmit" type="submit" value="Todo追加" />
         <input
           id="txtTodo"

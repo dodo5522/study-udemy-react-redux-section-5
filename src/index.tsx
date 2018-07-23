@@ -3,7 +3,8 @@ import { render } from "react-dom";
 import Hello from "./Hello";
 
 interface ITodo {
-  [id: Number]: String;
+  id: Number;
+  title: String;
 }
 
 interface ITodos {
@@ -15,12 +16,12 @@ class List extends React.Component {
   constructor(props) {
     super(props);
   }
-
+  
   private render() {
     const listItems = this.props.todos.map(item => {
       return (
         <li>
-          #{item.id} {item.title}
+          #{item.id} {item.title} <button onClick={() => {this.props.deleteTodo(item.id)}}>delete</button>
         </li>
       );
     });
@@ -28,12 +29,8 @@ class List extends React.Component {
   }
 }
 
-interface TodoTitle {
-  title: String;
-}
-
 class TodoAppender extends React.Component {
-  private state: TodoTitle;
+  private state: { title: String };
 
   constructor(props) {
     super(props);
@@ -79,19 +76,28 @@ class App extends React.Component {
   private render() {
     return (
       <div>
-        <TodoAppender appender={this.AddTodo} />
+        <TodoAppender appender={this.addTodo} />
         <hr />
-        <List todos={this.state.todos} />
+        <List deleteTodo={this.deleteTodo} todos={this.state.todos} />
       </div>
     );
   }
 
-  private AddTodo = (title: String): void => {
+  private addTodo = (todoTitle: String) => {
     this.setState({
-      todos: [...this.state.todos, { id: this.state.nextId, title: title }],
+      todos: [...this.state.todos, { id: this.state.nextId, title: todoTitle }],
       nextId: this.state.nextId + 1
     });
-  };
+  });
+
+  privte deleteTodo = (id: Number) => {
+    this.setState({
+      todos: this.state.todos.filter((todo) => {
+        return (todo.id !== id);
+      });
+      nextId: this.state.nextId
+    });
+  }
 }
 
 render(<App />, document.getElementById("root"));

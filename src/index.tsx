@@ -18,10 +18,11 @@ class List extends React.Component {
   }
   
   private render() {
-    const listItems = this.props.todos.map(item => {
+    const { todos, deleteTodo } = this.props;
+    const listItems = todos.map(item => {
       return (
         <li>
-          #{item.id} {item.title} <button onClick={() => {this.props.deleteTodo(item.id)}}>delete</button>
+          #{item.id} {item.title} <button onClick={() => {deleteTodo(item.id)}}>delete</button>
         </li>
       );
     });
@@ -84,18 +85,20 @@ class App extends React.Component {
   }
 
   private addTodo = (todoTitle: String) => {
+    const { todos, nextId } = this.state;
     this.setState({
-      todos: [...this.state.todos, { id: this.state.nextId, title: todoTitle }],
-      nextId: this.state.nextId + 1
+      todos: [...todos, { id: nextId, title: todoTitle }],
+      nextId: nextId + 1
     });
   });
 
   privte deleteTodo = (id: Number) => {
+    const { todos, nextId } = this.state;
     this.setState({
-      todos: this.state.todos.filter((todo) => {
+      todos: todos.filter((todo) => {
         return (todo.id !== id);
       });
-      nextId: this.state.nextId
+      nextId: nextId
     });
   }
 }

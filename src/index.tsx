@@ -2,6 +2,8 @@ import * as React from "react";
 import { render } from "react-dom";
 import Hello from "./Hello";
 
+import "./index.css";
+
 interface ITodo {
   id: Number;
   title: String;
@@ -22,7 +24,9 @@ class List extends React.Component {
     const listItems = todos.map(item => {
       return (
         <li>
-          #{item.id} {item.title} <button onClick={() => {deleteTodo(item.id)}}>delete</button>
+          <div className="todo-id">#{item.id}</div>
+          <div className="todo-title">{item.title}</div>
+          <div className="todo-controllers"><button onClick={() => {deleteTodo(item.id)}}>delete</button></div>
         </li>
       );
     });
@@ -76,7 +80,7 @@ class App extends React.Component {
 
   private render() {
     return (
-      <div>
+      <div class="App">
         <TodoAppender appender={this.addTodo} />
         <hr />
         <List deleteTodo={this.deleteTodo} todos={this.state.todos} />
